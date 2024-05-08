@@ -73,7 +73,7 @@ class ConnectionThread(threading.Thread):
                     s_print(f"<[{self.ip}][{msg['ID']}] Registration from {msg['SystemSerialNumber']} - {device.hostname}")
 
                     device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_QUALITY_DEFAULT)
-                    webhook_manager.registration_received(
+                    webhook_manager.registratxion_received(
                         device.ip, device.friendly_name, device.hostname, device.serial_number, device.registration)
                 elif (msg['Type'] == "status"):
                     s_print(f"<[{self.ip}][{msg['ID']}] Status from {msg['SystemSerialNumber']}")

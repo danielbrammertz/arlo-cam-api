@@ -791,7 +791,7 @@ REGISTER_SET_INITIAL_SUBSCRIPTION = {
         "MaxStreamTimeLimit": 1800,
         "MaxUserStreamTimeLimit": 1800,
         "NightModeGrey": 0,
-        "NightModeLightSourceAlert": 1,
+        "NightModeLightSourceAlert": 0,
         "NightVisionMode": True,
         "SpotlightIntensityAlert": 100,
         "SpotlightModeAlert": 0,
