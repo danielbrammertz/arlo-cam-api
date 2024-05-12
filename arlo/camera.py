@@ -1,8 +1,10 @@
 import copy
+import sqlite3
 
 from arlo.messages import Message
 import arlo.messages
 from arlo.device import Device
+from helpers.safe_print import s_print
 
 DEVICE_PREFIXES = [
     'VMC',
@@ -17,7 +19,13 @@ class Camera(Device):
     def port(self):
         return 4000
 
-    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default'):
+    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default', device=None):
+    
+        print(f"send_initial_register_set: serial: {self.serial_number} {wifi_country_code}, {video_anti_flicker_rate}, {video_quality_default}, {device}")  # noqa: E999
+
+
+        
+
         if self.model_number.startswith('VMC5040'):
             registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_ULTRA))
         elif self.model_number.startswith('FB1001'):
@@ -28,6 +36,8 @@ class Camera(Device):
         registerSet['SetValues']['WifiCountryCode'] = wifi_country_code
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
         self.send_message(registerSet)
+        if (device.armed is not None):
+            self.arm(eval(device.armed))
 
         if video_quality_default == 'default':
             video_quality_default = 'insane'
@@ -98,6 +108,13 @@ class Camera(Device):
         return self.send_message(ra_params) and self.send_message(registerSet)
 
     def arm(self, args):
+        s_print(f"arm: {args}"   )
+        with sqlite3.connect('arlo.db') as conn:
+            c = conn.cursor()
+            
+            c.execute("UPDATE devices SET armed = ? WHERE ip = ? AND serialnumber = ?",
+                      (repr(args), self.ip, self.serial_number ))
+            conn.commit()
         register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
 
         pir_target_state = args['PIRTargetState']

@@ -5,6 +5,7 @@ import functools
 from arlo.messages import Message
 from arlo.device_factory import DeviceFactory
 from arlo.device import Device
+from helpers.safe_print import s_print
 
 
 class DeviceDB:
@@ -33,13 +34,17 @@ class DeviceDB:
             c = conn.cursor()
             c.execute("SELECT * FROM devices WHERE ip = ?", (ip,))
             result = c.fetchone()
+            # Now print the whole result set
+            
+
             return DeviceDB.from_db_row(result)
 
     @staticmethod
     def from_db_row(row):
+        s_print(row)
         if row is not None:
-            (ip, _, _, registration, status, friendly_name) = row
-            _registration = Message.from_json(registration)
+            (ip, _, _, status, register_set, friendly_name, armed) = row
+            _registration = Message.from_json(register_set)
 
             device = DeviceFactory.createDevice(ip, _registration)
             if device is None:
@@ -47,6 +52,7 @@ class DeviceDB:
 
             device.status = Message.from_json(status)
             device.friendly_name = friendly_name
+            device.armed = armed
             return device
         else:
             return None
@@ -59,8 +65,8 @@ class DeviceDB:
             # Remove the IP for any redundant device that has the same IP...
             c.execute("UPDATE devices SET ip = 'UNKNOWN' WHERE ip = ? AND serialnumber <> ?",
                       (device.ip, device.serial_number))
-            c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?)", (device.ip, device.serial_number,
-                      device.hostname, repr(device.registration), repr(device.status), device.friendly_name))
+            c.execute("REPLACE INTO devices (ip , serialnumber , hostname , status , register_set , friendlyname ) VALUES (?,?,?,?,?,?)", (device.ip, device.serial_number,
+                      device.hostname,  repr(device.status), repr(device.registration), device.friendly_name ))
             conn.commit()
 
     @staticmethod
