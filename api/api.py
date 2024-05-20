@@ -48,7 +48,7 @@ def list():
         devices = []
         if rows is not None:
             for row in rows:
-                (ip, serial_number, hostname, _, _, friendly_name) = row
+                (ip, serial_number, hostname, _, _, friendly_name, _) = row
                 devices.append({"ip": ip, "hostname": hostname,
                                "serial_number": serial_number, "friendly_name": friendly_name})
 

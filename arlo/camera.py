@@ -32,7 +32,6 @@ class Camera(Device):
             registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_FLOODLIGHT))
         else:
             registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_SUBSCRIPTION))
-            self.arm({"PIRTargetState": "Armed"})
         registerSet['SetValues']['WifiCountryCode'] = wifi_country_code
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
         self.send_message(registerSet)
