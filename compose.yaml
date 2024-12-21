@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  arlo-cam-api:
+    container_name: 'arlo-cam-api'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+      - 5000:5000
+    volumes:
+      - ./config.yaml:/opt/arlo-cam-api/config.yaml
+      - ./arlo.db:/opt/arlo-cam-api/arlo.db
+    restart: 'always'
