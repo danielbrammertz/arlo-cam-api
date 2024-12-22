@@ -748,7 +748,7 @@ REGISTER_SET_INITIAL_ULTRA = {
         "MaxStreamTimeLimit": 1800,
         "MaxUserStreamTimeLimit": 1800,
         "NightModeGrey": 0,  # ??
-        "NightModeLightSourceAlert": 1,  # enable (1)/disable (0) spotlight at night
+        "NightModeLightSourceAlert": 0,  # enable (1)/disable (0) spotlight at night
         "NightVisionMode": True, # night vision enabled
         "PIRAction": "Stream+Spotlight", # turn on floodlight with motion
         "PIRStartSensitivity": 95,
@@ -791,7 +791,7 @@ REGISTER_SET_INITIAL_SUBSCRIPTION = {
         "MaxStreamTimeLimit": 1800,
         "MaxUserStreamTimeLimit": 1800,
         "NightModeGrey": 0,
-        "NightModeLightSourceAlert": 1,
+        "NightModeLightSourceAlert": 0,
         "NightVisionMode": True,
         "SpotlightIntensityAlert": 100,
         "SpotlightModeAlert": 0,
